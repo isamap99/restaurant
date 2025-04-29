@@ -59,4 +59,12 @@ public class Customer
   {
     return  Name + "   " + Family + "   " + Address + "   " + Phone;
   }
+  
+  public Customer(String name, String family, String address, String phone) {
+	    this.Name = name;
+	    this.Family = family;
+	    this.Address = address;
+	    this.Phone = phone;
+	}
+
 }

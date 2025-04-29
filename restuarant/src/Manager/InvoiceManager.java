@@ -1,12 +1,13 @@
 package Manager;
 
-import Common.Order;
 import Common.Invoice;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import Order;
 
 public class InvoiceManager {
     private List<Invoice> invoices;
