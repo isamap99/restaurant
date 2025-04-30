@@ -4,29 +4,43 @@ package grestaurant;
 import Common.Customer;
 import Common.Table;
 import Manager.TableManager;
+import Menu;
+import Order;
+import Common.*;
+import Manager.*;
 
 public class Main {
-  public static void main(String[] args) {
-    TableManager tm = new TableManager("tables.txt");
+    public static void main(String[] args) {
+        // 1. ساخت مشتری
+        Customer customer = new Customer("علی", "رضایی", "تهران", "09123456789");
 
-    // ساخت میزها
-    Table t1 = new Table("t10", 4);
-    Table t2 = new Table("t11", 6);
-    tm.addTable(t1);
-    tm.addTable(t2);
+        // 2. ساخت سفارش و افزودن آیتم‌ها
+        Order order = new Order(1, customer, "t2");
+        order.addItem(new Menu.Food("جوجه‌کباب", 150), 2);
+        order.addItem(new Menu.Drink("دوغ", 17), 1);
+        order.setDiscount(10);
 
-    // ساخت مشتری
-    Customer c = new Customer();
-    c.setName("محمد");
-    c.setFamily("جعفری");
-    c.setAddress("بناب");
-    c.setPhone("09123456789");
+        // 3. ساخت InvoiceManager و ثبت فاکتور
+        InvoiceManager invoiceManager = new InvoiceManager();
+        invoiceManager.createInvoice(order);
 
-    // رزرو میز t10 برای مشتری
-    tm.reserveTable("t10", c);
+        // 4. چاپ همه فاکتورها
+        System.out.println("\n📄 همه فاکتورها:");
+        invoiceManager.printAllInvoices();
 
-    // نمایش مشتری روی میز t10
-    tm.getCustomerOfTable("t10");
+        // 5. جستجوی فاکتور بر اساس شماره
+        System.out.println("\n🔍 جستجو با شماره فاکتور:");
+        invoiceManager.searchInvoice(1, null);
 
-  }
+        // 6. حذف فاکتور بر اساس نام مشتری
+        //System.out.println("\n❌ حذف فاکتور بر اساس نام:");
+        //invoiceManager.removeInvoice(-1, "علی");
+
+        // 7. چاپ نهایی فاکتورها (باید خالی باشه)
+        System.out.println("\n📄 فاکتورهای باقیمانده:");
+        invoiceManager.printAllInvoices();
+        
+        System.out.println("Current working directory: " + System.getProperty("user.dir"));
+
+    }
 }
