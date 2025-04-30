@@ -7,13 +7,33 @@ public class Order {
     private int orderId; // شماره سفارش
     private List<OrderItem> items; // لیست آیتم‌های سفارش با تعداد و قیمت
     private double discount; // تخفیف (به درصد، مثلاً 10 برای 10%)
+    private Customer customer; // مشتری
+    private String tableNumber; // شماره میز
+    private boolean isPaid; // وضعیت پرداخت سفارش
 
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.isPaid = paid;
+    }
+    
     public Order(int orderId) {
         this.orderId = orderId;
         this.items = new ArrayList<>();
         this.discount = 0;
     }
 
+    // سازنده با customer و tableNumber
+    public Order(int orderId, Customer customer, String tableNumber) {
+        this.orderId = orderId;
+        this.customer = customer;
+        this.tableNumber = tableNumber;
+        this.items = new ArrayList<>();
+        this.discount = 0;
+    }
+    
     // اضافه کردن آیتم به سفارش
     public void addItem(Menu.Food food, int quantity) {
         items.add(new OrderItem(food.name, food.price, quantity));
@@ -88,6 +108,16 @@ public class Order {
         return discount;
     }
 
+    // گرفتن مشتری
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    // گرفتن شماره میز
+    public String getTableNumber() {
+        return tableNumber;
+    }
+    
     // کلاس داخلی برای آیتم‌های سفارش
     public static class OrderItem {
         private String name; // نام آیتم
