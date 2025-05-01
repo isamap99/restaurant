@@ -154,6 +154,36 @@ public class OrderManager {
         System.out.printf("مجموع کل سفارش‌ها: %.0f تومن%n", getTotalAllOrders());
     }
 
+    // محاسبه مجموع قیمت همه سفارش‌ها
+    public double getTotalAllOrders() {
+        double total = 0;
+        for (Order order : orders) {
+            total += order.getTotalPrice();
+        }
+        return total;
+    }
+
+    // نمایش همه سفارش‌ها
+    public void displayOrders() {
+        if (orders.isEmpty()) {
+            System.out.println("هیچ سفارشی ثبت نشده است.");
+            return;
+        }
+        System.out.println("=== لیست سفارش‌ها ===");
+        for (Order order : orders) {
+            System.out.println("سفارش شماره: " + order.getOrderId());
+            System.out.println("آیتم‌ها:");
+            for (Order.OrderItem item : order.getItems()) {
+                System.out.printf("- %s: %d عدد (%.0f تومن هر واحد، جمع: %.0f تومن)%n",
+                        item.getName(), item.getQuantity(), item.getUnitPrice(), item.getUnitPrice() * item.getQuantity());
+            }
+            System.out.printf("تخفیف: %.0f%%%n", order.getDiscount());
+            System.out.printf("مجموع قیمت سفارش: %.0f تومن%n", order.getTotalPrice());
+            System.out.println("-------------------");
+        }
+        System.out.printf("مجموع کل سفارش‌ها: %.0f تومن%n", getTotalAllOrders());
+    }
+    
     // ذخیره سفارش‌ها تو حافظه استاتیک
     public void saveOrders() {
         savedOrders = new ArrayList<>();
