@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Common.Customer;
 import Common.FileUtil;
-import fileManager.txtFileManager;
+import FileManager.txtFileManager;
 
 public class CustomerManager {
 
@@ -17,7 +17,7 @@ public class CustomerManager {
 
   public CustomerManager() {
 	    FileUtil.createFileIfNotExists(FILE_PATH);
-	    fileManager = new txtFileManager(FILE_PATH); // ← این خط اضافه شود
+	    fileManager = new txtFileManager(FILE_PATH); // â†� Ø§ÛŒÙ† Ø®Ø· Ø§Ø¶Ø§Ù�Ù‡ Ø´ÙˆØ¯
 	}
 
 
@@ -34,10 +34,10 @@ public class CustomerManager {
 	    if (all[i] != null) {
 	      String line;
 	      if (all[i].getPhone().equals(phone)) {
-	        // اگر شماره برابر بود، مشتری جدید رو جایگزین کن
+	        // Ø§Ú¯Ø± Ø´Ù…Ø§Ø±Ù‡ Ø¨Ø±Ø§Ø¨Ø± Ø¨ÙˆØ¯ØŒ Ù…Ø´ØªØ±ÛŒ Ø¬Ø¯ÛŒØ¯ Ø±Ùˆ Ø¬Ø§ÛŒÚ¯Ø²ÛŒÙ† Ú©Ù†
 	        line = customerToString(newCustomer);
 	      } else {
-	        // در غیر این صورت، همون مشتری قبلی رو نگه‌دار
+	        // Ø¯Ø± ØºÛŒØ± Ø§ÛŒÙ† ØµÙˆØ±ØªØŒ Ù‡Ù…ÙˆÙ† Ù…Ø´ØªØ±ÛŒ Ù‚Ø¨Ù„ÛŒ Ø±Ùˆ Ù†Ú¯Ù‡â€ŒØ¯Ø§Ø±
 	        line = customerToString(all[i]);
 	      }
 
@@ -87,7 +87,7 @@ public class CustomerManager {
   public Customer[] findCustomerByNameAndFamily(String name, String family) {
 	  Customer[] all = getAllCustomers();
 
-	  // برای شمردن تعداد نتایج
+	  // Ø¨Ø±Ø§ÛŒ Ø´Ù…Ø±Ø¯Ù† ØªØ¹Ø¯Ø§Ø¯ Ù†ØªØ§ÛŒØ¬
 	  int count = 0;
 	  for (int i = 0; i < all.length; i++) {
 	    if (all[i] != null &&
@@ -97,7 +97,7 @@ public class CustomerManager {
 	    }
 	  }
 
-	  // ایجاد آرایه نتایج با اندازه مناسب
+	  // Ø§ÛŒØ¬Ø§Ø¯ Ø¢Ø±Ø§ÛŒÙ‡ Ù†ØªØ§ÛŒØ¬ Ø¨Ø§ Ø§Ù†Ø¯Ø§Ø²Ù‡ Ù…Ù†Ø§Ø³Ø¨
 	  Customer[] result = new Customer[count];
 	  int index = 0;
 	  for (int i = 0; i < all.length; i++) {
@@ -118,7 +118,7 @@ public class CustomerManager {
 
 	    for (String line : lines) {
 	        String[] parts = line.trim().split("   ");
-	        if (parts.length != 4) continue; // خط ناقص
+	        if (parts.length != 4) continue; // Ø®Ø· Ù†Ø§Ù‚Øµ
 
 	        Customer customer = new Customer();
 	        customer.setName(parts[0].trim());
