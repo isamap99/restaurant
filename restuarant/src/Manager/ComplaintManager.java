@@ -43,25 +43,27 @@ public class ComplaintManager {
         return results;
     }
 
-    // ویرایش شکایت
-    public void editComplaint(String tableNumber, String oldText, String newText) {
-        List<Complaint> complaints = getAllComplaints();
+ // ویرایش شکایت‌ها فقط بر اساس شماره میز
+    public void editComplaintByTable(String tableNumber, String newComplaintText) {
+        List<Complaint> complaints = getAllComplaints();  // تمام شکایت‌ها را می‌گیریم
         boolean found = false;
 
-        for (Complaint c : complaints) {
-            if (c.getTableNumber().equals(tableNumber) && c.getComplaintDetails().equals(oldText)) {
-                c.setComplaintDetails(newText);
+        for (Complaint complaint : complaints) {
+            if (complaint.getTableNumber().equals(tableNumber)) {
+                complaint.setComplaintDetails(newComplaintText);  // تغییر متن شکایت
                 found = true;
             }
         }
 
-        saveAllComplaints(complaints);
-        if (found)
-            System.out.println("✅ شکایت ویرایش شد.");
-        else
-            System.out.println("❗ شکایت مورد نظر پیدا نشد.");
+        // اگر شکایت‌ها پیدا شدند، آن‌ها را ذخیره می‌کنیم
+        if (found) {
+            saveAllComplaints(complaints);
+            System.out.println("✅ شکایت‌های شماره میز " + tableNumber + " ویرایش شد.");
+        } else {
+            System.out.println("❗ هیچ شکایتی برای شماره میز " + tableNumber + " پیدا نشد.");
+        }
     }
-
+    
     // حذف شکایت
     public void deleteComplaint(String tableNumber, String complaintText) {
         List<Complaint> complaints = getAllComplaints();
@@ -84,7 +86,7 @@ public class ComplaintManager {
     }
 
     // گرفتن تمام شکایت‌ها
-    private List<Complaint> getAllComplaints() {
+    public List<Complaint> getAllComplaints() {
         List<Complaint> complaints = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -101,7 +103,7 @@ public class ComplaintManager {
     }
 
     // ذخیره همه شکایت‌ها در فایل (بازنویسی کل فایل)
-    private void saveAllComplaints(List<Complaint> complaints) {
+    public void saveAllComplaints(List<Complaint> complaints) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Complaint c : complaints) {
                 writer.write(c.toFileFormat());
@@ -112,4 +114,21 @@ public class ComplaintManager {
             e.printStackTrace();
         }
     }
+ // متد برای به روز رسانی وضعیت شکایت در فایل
+    public void updateComplaintStatus(String tableNumber, String complaintDetails, String newStatus) {
+        // تمام شکایت‌ها را می‌گیریم
+        List<Complaint> complaints = getAllComplaints();  
+        
+        for (Complaint complaint : complaints) {
+            // بررسی برای پیدا کردن شکایت با شماره میز و متن شکایت مشخص
+            if (complaint.getTableNumber().equals(tableNumber) && complaint.getComplaintDetails().equals(complaintDetails)) {
+                // تغییر وضعیت شکایت
+                complaint.setStatus(newStatus);  
+                saveAllComplaints(complaints);  // ذخیره تغییرات در فایل
+                System.out.println("✅ وضعیت شکایت به حل شد تغییر یافت.");
+                break;
+            }
+        }
+    }
+
 }

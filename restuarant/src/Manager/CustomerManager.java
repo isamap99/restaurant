@@ -1,15 +1,25 @@
 package Manager;
 
+import java.util.ArrayList;
+
 import Common.Customer;
+import Common.FileUtil;
 import fileManager.txtFileManager;
 
 public class CustomerManager {
 
   private txtFileManager fileManager;
+  private final String FILE_PATH = "customers.txt";
 
   public CustomerManager(String fileName) {
     fileManager = new txtFileManager(fileName);
   }
+
+  public CustomerManager() {
+	    FileUtil.createFileIfNotExists(FILE_PATH);
+	    fileManager = new txtFileManager(FILE_PATH); // ← این خط اضافه شود
+	}
+
 
   public void addCustomer(Customer customer) {
 	  String line = customerToString(customer);
@@ -63,14 +73,15 @@ public class CustomerManager {
 
 
   public Customer findCustomerByPhone(String phone) {
-	  Customer[] customers = getAllCustomers();
-	  for (int i = 0; i < customers.length; i++) {
-	    if (customers[i] != null && customers[i].getPhone().equals(phone)) {
-	      return customers[i];
+	    Customer[] customers = getAllCustomers();
+	    for (Customer c : customers) {
+	        if (c.getPhone() != null && c.getPhone().equals(phone)) {
+	            return c;
+	        }
 	    }
-	  }
-	  return null;
+	    return null;
 	}
+
 
 
   public Customer[] findCustomerByNameAndFamily(String name, String family) {
@@ -102,15 +113,24 @@ public class CustomerManager {
 
 
   public Customer[] getAllCustomers() {
-	  String[] lines = fileManager.getArrayFromFile();
-	  Customer[] customers = new Customer[lines.length];
+	    String[] lines = fileManager.getArrayFromFile();
+	    ArrayList<Customer> customerList = new ArrayList<>();
 
-	  for (int i = 0; i < lines.length; i++) {
-	    customers[i] = parseCustomer(lines[i]);
-	  }
+	    for (String line : lines) {
+	        String[] parts = line.trim().split("   ");
+	        if (parts.length != 4) continue; // خط ناقص
 
-	  return customers;
+	        Customer customer = new Customer();
+	        customer.setName(parts[0].trim());
+	        customer.setFamily(parts[1].trim());
+	        customer.setAddress(parts[2].trim());
+	        customer.setPhone(parts[3].trim());
+	        customerList.add(customer);
+	    }
+
+	    return customerList.toArray(new Customer[0]);
 	}
+
 
 
   private Customer parseCustomer(String line) {

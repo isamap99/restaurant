@@ -259,23 +259,24 @@ public class TableManager {
 	}
 
   public void getCustomerOfTable(String tableNumber) {
-	  txtFileManager resFile = new txtFileManager("reservations.txt");
-	  String[] reservations = resFile.getArrayFromFile();
+	    txtFileManager resFile = new txtFileManager("reservations.txt");
+	    String[] reservations = resFile.getArrayFromFile();
 
-	  for (String line : reservations) {
-	    if (line != null && line.startsWith(tableNumber + "   ")) {
-	      String[] parts = line.trim().split("   ");
-	      if (parts.length >= 4) {
-	        System.out.println("مشتری روی میز " + tableNumber + ":");
-	        System.out.println("نام: " + parts[2]);
-	        System.out.println("نام خانوادگی: " + parts[3]);
-	        System.out.println("شماره تماس: " + parts[1]);
-	      }
-	      return;
+	    for (String line : reservations) {
+	        if (line != null && line.startsWith(tableNumber + "   ")) {
+	            // استفاده از Regular Expression برای تقسیم رشته با هر تعداد فاصله
+	            String[] parts = line.trim().split("\\s{3,}"); // هر تعداد فاصله بیشتر از ۳
+	            if (parts.length >= 4) {
+	                System.out.println("مشتری روی میز " + tableNumber + ":");
+	                System.out.println("نام: " + parts[2]);
+	                System.out.println("نام خانوادگی: " + parts[3]);
+	                System.out.println("شماره تماس: " + parts[1]);
+	                return;
+	            }
+	        }
 	    }
-	  }
 
-	  System.out.println("برای این میز هیچ رزروی ثبت نشده است.");
+	    System.out.println("برای این میز هیچ رزروی ثبت نشده است.");
 	}
 
   public void getTableOfCustomer(String phone) {
@@ -293,6 +294,16 @@ public class TableManager {
 	  }
 
 	  System.out.println("هیچ رزروی برای مشتری با این شماره تماس ثبت نشده است.");
+	}
+  public void freeTable(String tableNumber) {
+	    Table table = findTableByNumber(tableNumber);
+	    if (table != null) {
+	        table.setEmpty();
+	        updateTableByNumber(tableNumber, table); // آپدیت وضعیت میز به "خالی"
+	        System.out.println("میز " + tableNumber + " آزاد شد.");
+	    } else {
+	        System.out.println("میزی با این شماره یافت نشد.");
+	    }
 	}
 
   	

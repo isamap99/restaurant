@@ -1,81 +1,101 @@
 package Manager;
 
 import Common.Invoice;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import Common.Order;
+import Common.FileUtil;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import Order;
-
 public class InvoiceManager {
     private List<Invoice> invoices;
+    private int nextInvoiceId;
 
     public InvoiceManager() {
-        invoices = new ArrayList<>();
+        this.invoices = new ArrayList<>();
+        this.nextInvoiceId = 1; // Starting with Invoice ID 1
     }
 
-    public List<Invoice> getInvoices() {
-        return invoices;
-    }
-
-    // فاکتور جدید
-    public void createInvoice(Order order) {
-        Invoice invoice = new Invoice(order);
+    public Invoice createInvoice(Order order) {
+        Invoice invoice = new Invoice(nextInvoiceId++, order);
         invoices.add(invoice);
-        invoice.printInvoice();  // چاپ فاکتور در کنسول
-        saveInvoiceToFile(invoice);  // ذخیره فاکتور در فایل
+        return invoice;
     }
 
-    // ذخیره فاکتور در فایل
-    private void saveInvoiceToFile(Invoice invoice) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("invoices.txt", true))) {
-            writer.write(invoice.toString());  // فرض بر این است که متد toString در Invoice پیاده‌سازی شده
-            writer.newLine();  // اضافه کردن یک خط جدید پس از هر فاکتور
-        } catch (IOException e) {
-            System.out.println("خطا در ذخیره فاکتور: " + e.getMessage());
+    public Invoice getInvoiceById(int invoiceId) {
+        for (Invoice invoice : invoices) {
+            if (invoice.getInvoiceId() == invoiceId) {
+                return invoice;
+            }
+        }
+        return null;
+    }
+
+    public void setInvoicePaid(int invoiceId, boolean isPaid) {
+        Invoice invoice = getInvoiceById(invoiceId);
+        if (invoice != null) {
+            invoice.setPaid(isPaid);
+            System.out.println("Invoice #" + invoiceId + " marked as " + (isPaid ? "Paid" : "Unpaid"));
+        } else {
+            System.out.println("Invoice not found.");
         }
     }
 
-    // چاپ همه فاکتورها
-    public void printAllInvoices() {
+    public void displayAllInvoices() {
         if (invoices.isEmpty()) {
-            System.out.println("هیچ فاکتوری ثبت نشده است.");
+            System.out.println("No invoices available.");
             return;
         }
         for (Invoice invoice : invoices) {
-            invoice.printInvoice();
-            System.out.println();
+            invoice.printInvoiceDetails();
+            System.out.println("----------------------------");
         }
     }
 
-    // حذف فاکتور
-    public void removeInvoice(int orderId, String customerName) {
-        for (int i = 0; i < invoices.size(); i++) {
-            Invoice invoice = invoices.get(i);
-            Order order = invoice.getOrder();
-
-            if (order.getOrderId() == orderId || order.getCustomer().getName().equalsIgnoreCase(customerName)) {
-                invoices.remove(i);
-                System.out.println("✅ فاکتور حذف شد.");
-                return;
+    public void saveInvoicesToFile(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Invoice invoice : invoices) {
+                writer.println("InvoiceId:" + invoice.getInvoiceId());
+                writer.println("OrderId:" + invoice.getOrder().getOrderId());
+                writer.println("TotalAmount:" + invoice.getTotalAmount());
+                writer.println("PaidStatus:" + invoice.isPaid());
+                for (Order.OrderItem item : invoice.getOrder().getItems()) {
+                    writer.printf("Item:%s;%d;%.0f%n", item.getName(), item.getQuantity(), item.getUnitPrice());
+                }
+                writer.println("END_INVOICE");
             }
+            System.out.println("Invoices saved to file successfully.");
+        } catch (IOException e) {
+            System.out.println("Error saving invoices: " + e.getMessage());
         }
-        System.out.println("⚠️ فاکتور پیدا نشد.");
     }
 
-    // جستجو فاکتور
-    public void searchInvoice(int orderId, String customerName) {
-        for (Invoice invoice : invoices) {
-            Order order = invoice.getOrder();
-
-            if (order.getOrderId() == orderId || order.getCustomer().getName().equalsIgnoreCase(customerName)) {
-                System.out.println("✅ فاکتور پیدا شد:");
-                invoice.printInvoice();
-                return;
+    public void loadInvoicesFromFile(String filename) {
+        FileUtil.createFileIfNotExists(filename); // Ensure the file exists
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            invoices.clear();
+            String line;
+            Invoice currentInvoice = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("InvoiceId:")) {
+                    int invoiceId = Integer.parseInt(line.substring(10));
+                    currentInvoice = new Invoice(invoiceId, null); // Temporarily create with null Order
+                } else if (line.startsWith("OrderId:") && currentInvoice != null) {
+                    int orderId = Integer.parseInt(line.substring(8));
+                    // Load the order by orderId (assuming you have a method to retrieve orders)
+                    Order order = new Order(0); // You need to implement this method
+                    currentInvoice = new Invoice(currentInvoice.getInvoiceId(), order);
+                } else if (line.startsWith("TotalAmount:") && currentInvoice != null) {
+                    currentInvoice = new Invoice(currentInvoice.getInvoiceId(), currentInvoice.getOrder());
+                    currentInvoice.getTotalAmount(); // Set the total amount from file
+                } else if (line.equals("END_INVOICE")) {
+                    invoices.add(currentInvoice);
+                }
             }
+            System.out.println("Invoices loaded successfully.");
+        } catch (IOException e) {
+            System.out.println("Error loading invoices: " + e.getMessage());
         }
-        System.out.println("⚠️ فاکتور پیدا نشد.");
     }
 }

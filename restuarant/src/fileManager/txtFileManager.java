@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import Common.FileUtil;
 
 public class txtFileManager
 {
@@ -13,10 +14,13 @@ public class txtFileManager
   
   public txtFileManager(String FileName)
   {
-    this.FileName = FileName;
-    System.out.println("File path: " + new File(this.FileName).getAbsolutePath());
+      this.FileName = FileName;
 
-    _UpdateRows(); // ← این خطو اضافه کن
+      // 🛠️ فایل رو بساز اگر وجود نداره
+      FileUtil.createFileIfNotExists(FileName);
+
+      System.out.println("File path: " + new File(this.FileName).getAbsolutePath());
+      _UpdateRows();
   }
 
   
