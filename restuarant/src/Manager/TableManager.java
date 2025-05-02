@@ -2,7 +2,7 @@ package Manager;
 
 import Common.Table;
 import Common.Customer;
-import fileManager.txtFileManager;
+import FileManager.txtFileManager;
 
 public class TableManager {
 
@@ -13,10 +13,10 @@ public class TableManager {
   }
 
   public void addTable(Table table) {
-	  // اول بررسی می‌کنیم که تکراری نباشه
+	  // Ø§ÙˆÙ„ Ø¨Ø±Ø±Ø³ÛŒ Ù…ÛŒâ€ŒÚ©Ù†ÛŒÙ… Ú©Ù‡ ØªÚ©Ø±Ø§Ø±ÛŒ Ù†Ø¨Ø§Ø´Ù‡
 	  Table existing = findTableByNumber(table.getTableNumber());
 	  if (existing != null) {
-	    System.out.println("میزی با این شماره قبلاً ثبت شده است.");
+	    System.out.println("Ù…ÛŒØ²ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ Ù‚Ø¨Ù„Ø§Ù‹ Ø«Ø¨Øª Ø´Ø¯Ù‡ Ø§Ø³Øª.");
 	    return;
 	  }
 
@@ -49,9 +49,9 @@ public class TableManager {
 	    if (all[i] != null) {
 	      String line;
 	      if (all[i].getTableNumber().equals(tableNumber)) {
-	        line = tableToString(newTable); // جایگزین
+	        line = tableToString(newTable); // Ø¬Ø§ÛŒÚ¯Ø²ÛŒÙ†
 	      } else {
-	        line = tableToString(all[i]);   // همون قبلی
+	        line = tableToString(all[i]);   // Ù‡Ù…ÙˆÙ† Ù‚Ø¨Ù„ÛŒ
 	      }
 
 	      if (!newContent.equals(""))
@@ -93,7 +93,7 @@ public class TableManager {
 	    table.setOccupied();
 	    updateTableByNumber(tableNumber, table);
 	  } else {
-	    System.out.println("میزی با این شماره یافت نشد.");
+	    System.out.println("Ù…ÛŒØ²ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ ÛŒØ§Ù�Øª Ù†Ø´Ø¯.");
 	  }
 	}
 
@@ -103,7 +103,7 @@ public class TableManager {
 	    table.setEmpty();
 	    updateTableByNumber(tableNumber, table);
 	  } else {
-	    System.out.println("میزی با این شماره یافت نشد.");
+	    System.out.println("Ù…ÛŒØ²ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ ÛŒØ§Ù�Øª Ù†Ø´Ø¯.");
 	  }
 	}
 
@@ -114,7 +114,7 @@ public class TableManager {
 	    int newSeatCount = table.getSeatCount() + extraSeats;
 	    Table updatedTable = new Table(table.getTableNumber(), newSeatCount);
 
-	    // حفظ وضعیت قبلی (اشغال یا خالی)
+	    // Ø­Ù�Ø¸ ÙˆØ¶Ø¹ÛŒØª Ù‚Ø¨Ù„ÛŒ (Ø§Ø´ØºØ§Ù„ ÛŒØ§ Ø®Ø§Ù„ÛŒ)
 	    if (table.isOccupied())
 	      updatedTable.setOccupied();
 	    else
@@ -122,7 +122,7 @@ public class TableManager {
 
 	    updateTableByNumber(tableNumber, updatedTable);
 	  } else {
-	    System.out.println("میزی با این شماره یافت نشد.");
+	    System.out.println("Ù…ÛŒØ²ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ ÛŒØ§Ù�Øª Ù†Ø´Ø¯.");
 	  }
 	}
 
@@ -130,14 +130,14 @@ public class TableManager {
   public Table[] getEmptyTables() {
 	  Table[] all = getAllTables();
 
-	  // شمارش اولیه برای اندازه آرایه نهایی
+	  // Ø´Ù…Ø§Ø±Ø´ Ø§ÙˆÙ„ÛŒÙ‡ Ø¨Ø±Ø§ÛŒ Ø§Ù†Ø¯Ø§Ø²Ù‡ Ø¢Ø±Ø§ÛŒÙ‡ Ù†Ù‡Ø§ÛŒÛŒ
 	  int count = 0;
 	  for (int i = 0; i < all.length; i++) {
 	    if (all[i] != null && all[i].isEmpty())
 	      count++;
 	  }
 
-	  // ساخت آرایه فقط با میزهای خالی
+	  // Ø³Ø§Ø®Øª Ø¢Ø±Ø§ÛŒÙ‡ Ù�Ù‚Ø· Ø¨Ø§ Ù…ÛŒØ²Ù‡Ø§ÛŒ Ø®Ø§Ù„ÛŒ
 	  Table[] result = new Table[count];
 	  int index = 0;
 	  for (int i = 0; i < all.length; i++) {
@@ -153,14 +153,14 @@ public class TableManager {
   public Table[] getOccupiedTables() {
 	  Table[] all = getAllTables();
 
-	  // شمارش میزهای اشغال‌شده
+	  // Ø´Ù…Ø§Ø±Ø´ Ù…ÛŒØ²Ù‡Ø§ÛŒ Ø§Ø´ØºØ§Ù„â€ŒØ´Ø¯Ù‡
 	  int count = 0;
 	  for (int i = 0; i < all.length; i++) {
 	    if (all[i] != null && all[i].isOccupied())
 	      count++;
 	  }
 
-	  // ساخت آرایه فقط با میزهای اشغال
+	  // Ø³Ø§Ø®Øª Ø¢Ø±Ø§ÛŒÙ‡ Ù�Ù‚Ø· Ø¨Ø§ Ù…ÛŒØ²Ù‡Ø§ÛŒ Ø§Ø´ØºØ§Ù„
 	  Table[] result = new Table[count];
 	  int index = 0;
 	  for (int i = 0; i < all.length; i++) {
@@ -195,7 +195,7 @@ public class TableManager {
 
 	  Table table = new Table(tableNumber, seatCount);
 
-	  if (parts[2].equals("اشغال"))
+	  if (parts[2].equals("Ø§Ø´ØºØ§Ù„"))
 	    table.setOccupied();
 	  else
 	    table.setEmpty();
@@ -203,38 +203,38 @@ public class TableManager {
 	  return table;
 	}
   public void reserveTable(String tableNumber, Customer customer) {
-	  // بررسی اینکه میز وجود داره و خالیه
+	  // Ø¨Ø±Ø±Ø³ÛŒ Ø§ÛŒÙ†Ú©Ù‡ Ù…ÛŒØ² ÙˆØ¬ÙˆØ¯ Ø¯Ø§Ø±Ù‡ Ùˆ Ø®Ø§Ù„ÛŒÙ‡
 	  Table table = findTableByNumber(tableNumber);
 	  if (table == null) {
-	    System.out.println("میز مورد نظر وجود ندارد.");
+	    System.out.println("Ù…ÛŒØ² Ù…ÙˆØ±Ø¯ Ù†Ø¸Ø± ÙˆØ¬ÙˆØ¯ Ù†Ø¯Ø§Ø±Ø¯.");
 	    return;
 	  }
 	  if (table.isOccupied()) {
-	    System.out.println("میز مورد نظر قبلاً اشغال شده است.");
+	    System.out.println("Ù…ÛŒØ² Ù…ÙˆØ±Ø¯ Ù†Ø¸Ø± Ù‚Ø¨Ù„Ø§Ù‹ Ø§Ø´ØºØ§Ù„ Ø´Ø¯Ù‡ Ø§Ø³Øª.");
 	    return;
 	  }
 
-	  // بررسی اینکه رزرو قبلاً برای این میز ثبت نشده
+	  // Ø¨Ø±Ø±Ø³ÛŒ Ø§ÛŒÙ†Ú©Ù‡ Ø±Ø²Ø±Ùˆ Ù‚Ø¨Ù„Ø§Ù‹ Ø¨Ø±Ø§ÛŒ Ø§ÛŒÙ† Ù…ÛŒØ² Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡
 	  txtFileManager resFile = new txtFileManager("reservations.txt");
 	  String[] reservations = resFile.getArrayFromFile();
 	  for (String line : reservations) {
 	    if (line != null && line.startsWith(tableNumber + "   ")) {
-	      System.out.println("برای این میز قبلاً رزرو ثبت شده است.");
+	      System.out.println("Ø¨Ø±Ø§ÛŒ Ø§ÛŒÙ† Ù…ÛŒØ² Ù‚Ø¨Ù„Ø§Ù‹ Ø±Ø²Ø±Ùˆ Ø«Ø¨Øª Ø´Ø¯Ù‡ Ø§Ø³Øª.");
 	      return;
 	    }
 	  }
 
-	  // ساخت خط جدید رزرو و افزودن به فایل
+	  // Ø³Ø§Ø®Øª Ø®Ø· Ø¬Ø¯ÛŒØ¯ Ø±Ø²Ø±Ùˆ Ùˆ Ø§Ù�Ø²ÙˆØ¯Ù† Ø¨Ù‡ Ù�Ø§ÛŒÙ„
 	  String resLine = tableNumber + "   " +
 	                   customer.getPhone() + "   " +
 	                   customer.getName() + "   " +
 	                   customer.getFamily();
 	  resFile.AppendRow(resLine);
 
-	  // تغییر وضعیت میز به اشغال
+	  // ØªØºÛŒÛŒØ± ÙˆØ¶Ø¹ÛŒØª Ù…ÛŒØ² Ø¨Ù‡ Ø§Ø´ØºØ§Ù„
 	  setTableOccupied(tableNumber);
 
-	  System.out.println("رزرو با موفقیت انجام شد.");
+	  System.out.println("Ø±Ø²Ø±Ùˆ Ø¨Ø§ Ù…ÙˆÙ�Ù‚ÛŒØª Ø§Ù†Ø¬Ø§Ù… Ø´Ø¯.");
 	}
   
   public void cancelReservation(String tableNumber) {
@@ -252,10 +252,10 @@ public class TableManager {
 
 	  resFile.setIntoFile(newContent);
 
-	  // تغییر وضعیت میز به "خالی"
+	  // ØªØºÛŒÛŒØ± ÙˆØ¶Ø¹ÛŒØª Ù…ÛŒØ² Ø¨Ù‡ "Ø®Ø§Ù„ÛŒ"
 	  setTableEmpty(tableNumber);
 
-	  System.out.println("رزرو میز " + tableNumber + " لغو شد.");
+	  System.out.println("Ø±Ø²Ø±Ùˆ Ù…ÛŒØ² " + tableNumber + " Ù„ØºÙˆ Ø´Ø¯.");
 	}
 
   public void getCustomerOfTable(String tableNumber) {
@@ -264,19 +264,19 @@ public class TableManager {
 
 	    for (String line : reservations) {
 	        if (line != null && line.startsWith(tableNumber + "   ")) {
-	            // استفاده از Regular Expression برای تقسیم رشته با هر تعداد فاصله
-	            String[] parts = line.trim().split("\\s{3,}"); // هر تعداد فاصله بیشتر از ۳
+	            // Ø§Ø³ØªÙ�Ø§Ø¯Ù‡ Ø§Ø² Regular Expression Ø¨Ø±Ø§ÛŒ ØªÙ‚Ø³ÛŒÙ… Ø±Ø´ØªÙ‡ Ø¨Ø§ Ù‡Ø± ØªØ¹Ø¯Ø§Ø¯ Ù�Ø§ØµÙ„Ù‡
+	            String[] parts = line.trim().split("\\s{3,}"); // Ù‡Ø± ØªØ¹Ø¯Ø§Ø¯ Ù�Ø§ØµÙ„Ù‡ Ø¨ÛŒØ´ØªØ± Ø§Ø² Û³
 	            if (parts.length >= 4) {
-	                System.out.println("مشتری روی میز " + tableNumber + ":");
-	                System.out.println("نام: " + parts[2]);
-	                System.out.println("نام خانوادگی: " + parts[3]);
-	                System.out.println("شماره تماس: " + parts[1]);
+	                System.out.println("Ù…Ø´ØªØ±ÛŒ Ø±ÙˆÛŒ Ù…ÛŒØ² " + tableNumber + ":");
+	                System.out.println("Ù†Ø§Ù…: " + parts[2]);
+	                System.out.println("Ù†Ø§Ù… Ø®Ø§Ù†ÙˆØ§Ø¯Ú¯ÛŒ: " + parts[3]);
+	                System.out.println("Ø´Ù…Ø§Ø±Ù‡ ØªÙ…Ø§Ø³: " + parts[1]);
 	                return;
 	            }
 	        }
 	    }
 
-	    System.out.println("برای این میز هیچ رزروی ثبت نشده است.");
+	    System.out.println("Ø¨Ø±Ø§ÛŒ Ø§ÛŒÙ† Ù…ÛŒØ² Ù‡ÛŒÚ† Ø±Ø²Ø±ÙˆÛŒ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª.");
 	}
 
   public void getTableOfCustomer(String phone) {
@@ -287,22 +287,22 @@ public class TableManager {
 	    if (line != null) {
 	      String[] parts = line.trim().split("   ");
 	      if (parts.length >= 2 && parts[1].equals(phone)) {
-	        System.out.println("مشتری با شماره " + phone + " میز " + parts[0] + " را رزرو کرده است.");
+	        System.out.println("Ù…Ø´ØªØ±ÛŒ Ø¨Ø§ Ø´Ù…Ø§Ø±Ù‡ " + phone + " Ù…ÛŒØ² " + parts[0] + " Ø±Ø§ Ø±Ø²Ø±Ùˆ Ú©Ø±Ø¯Ù‡ Ø§Ø³Øª.");
 	        return;
 	      }
 	    }
 	  }
 
-	  System.out.println("هیچ رزروی برای مشتری با این شماره تماس ثبت نشده است.");
+	  System.out.println("Ù‡ÛŒÚ† Ø±Ø²Ø±ÙˆÛŒ Ø¨Ø±Ø§ÛŒ Ù…Ø´ØªØ±ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ ØªÙ…Ø§Ø³ Ø«Ø¨Øª Ù†Ø´Ø¯Ù‡ Ø§Ø³Øª.");
 	}
   public void freeTable(String tableNumber) {
 	    Table table = findTableByNumber(tableNumber);
 	    if (table != null) {
 	        table.setEmpty();
-	        updateTableByNumber(tableNumber, table); // آپدیت وضعیت میز به "خالی"
-	        System.out.println("میز " + tableNumber + " آزاد شد.");
+	        updateTableByNumber(tableNumber, table); // Ø¢Ù¾Ø¯ÛŒØª ÙˆØ¶Ø¹ÛŒØª Ù…ÛŒØ² Ø¨Ù‡ "Ø®Ø§Ù„ÛŒ"
+	        System.out.println("Ù…ÛŒØ² " + tableNumber + " Ø¢Ø²Ø§Ø¯ Ø´Ø¯.");
 	    } else {
-	        System.out.println("میزی با این شماره یافت نشد.");
+	        System.out.println("Ù…ÛŒØ²ÛŒ Ø¨Ø§ Ø§ÛŒÙ† Ø´Ù…Ø§Ø±Ù‡ ÛŒØ§Ù�Øª Ù†Ø´Ø¯.");
 	    }
 	}
 
